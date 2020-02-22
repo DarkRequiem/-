@@ -78,8 +78,7 @@ export default {
                 return
             }
             this.timeer=setTimeout(()=>{
-                 let that =this;
-                 this.goal=false;
+                 
               axios.get('http://localhost:3000/search?keywords='+this.input)
             //   .then(function (res) {
                   
@@ -139,15 +138,16 @@ export default {
             margin: 0 auto;
             display: flex;
             padding-top: 50px;
-            justify-content: space-between;
+            
             flex-wrap: wrap;
             position: relative;
             .search{
                 border-radius: 30px;
                 background: #ebecec;
                 font-size: 16px;
-                padding: 2px 5px;
-                margin-top: 4px;
+                padding: 10px;
+                margin-top: 7px;
+                margin-right: 10px;
             }
         }
         .historylist{

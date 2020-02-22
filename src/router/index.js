@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import home from '../page/home/home.vue'
 import player from '../page/player/player.vue'
-import top from '../page/top/top.vue'
+import hot from '../page/hot/hot.vue'
 Vue.use(Router)
 
 export default new  Router ({
@@ -18,9 +18,9 @@ export default new  Router ({
           component: player
       },
       {
-          path: '/top',
-          name:'top',
-          component: top
+          path: '/hot',
+          name:'hot',
+          component: hot
       }
   ]
 })

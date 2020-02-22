@@ -1,14 +1,6 @@
 <template>
     <div class="main">
-        <div class="top">
-            <div class="logo"><img src="../../asset/img/logo.jpg" alt=""></div>
-            <div class="bt">下载音乐</div>
-        </div>
-        <div class="menu">
-            <div class="recommand"><a href="">推荐</a></div>
-            <div class="hot"><router-link to="top">热歌</router-link></div>
-            <div class="search"><router-link to="player">搜索</router-link></div>
-        </div>
+        
         <div class="list1">
             <div class="tag">推荐歌单</div>
             <div class="rongqi">
@@ -47,7 +39,8 @@ export default {
     data() {
         return {
             recommand:{},
-            hot:{}
+            hot:{},
+            testthis:''
         }
     },
     mounted(){
@@ -58,9 +51,7 @@ export default {
         getinfo(){
             axios.get('http://localhost:3000/personalized')
             .then(
-                console.log(123),
-                console.log(this),
-                console.log(123)
+                   this.handle
             )
         },
         handle(res){
@@ -77,7 +68,18 @@ export default {
            
         },
         setmusic(name,singer,id){
-           
+            var _this=this
+            axios.get('http://localhost:3000/song/detail?ids='+arguments[2])
+            .then(
+                    function(res){
+                    _this.testthis = res.data.songs[0].al.picUrl
+                    _this.$emit('change',name,singer,_this.testthis,id)
+                    },
+               
+               
+            )
+         
+
             this.$emit("change",name,singer,id);
 
         }
@@ -105,46 +107,7 @@ export default {
 a{
     text-decoration: none;
 }
- .top{
-     display: flex;
-     width: 100%;
-     height: px2em(65, -font-size);
-     background: #d43c33;
-     justify-content: space-between;
-     .logo{
-         display: block;
-         padding-top: px2em(7, -font-size);
-     }
-     .bt{
-         text-align: center;
-         margin-top: px2em(15, -font-size);
-         margin-right: px2em(10, -font-size);
-         color: white;
-         width: px2em(90, -font-size);
-         height: px2em(30, -font-size);
-         border: 1px solid white;
-         border-radius: 5%;
-     }
- }
- .menu{
-     display: flex;
-     justify-content: space-around;
-     a{
-             display: block;
-             padding-top: px2em(10, -font-size);
-             padding-left: px2em(20, -font-size);
-             color: #d43c33;
-         }
-     .recommand,.hot,.search{
-         width: px2em(78, -font-size);
-         height: px2em(42, -font-size);
-        
-         
-     }
-     .recommand:hover,.hot:hover,.search:hover{
-         border-bottom: 2px solid #d43c33; 
-     }
- }
+
  .list1{
      padding-top: px2em(20, -font-size);
      .tag{
@@ -162,10 +125,12 @@ a{
              width: 29.7%;
              margin-bottom: 20px;
              position: relative;
+             
              .photo{
                  img{
                  width: 100%;
                  height: 100%;
+                 border-radius: 8px;
               }
              }
              .text{

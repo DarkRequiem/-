@@ -1,17 +1,29 @@
 <template>
   <div id="app">
+     <div class="top">
+            <div class="logo"><img src="./asset/img/logo.jpg" alt=""></div>
+            <div class="bt">下载音乐</div>
+        </div>
+        <div class="menu">
+            <div class="recommand"><a href="">推荐</a></div>
+            <div class="hot"><router-link to="hot">热歌</router-link></div>
+            <div class="search"><router-link to="player">搜索</router-link></div>
+        </div>
+        
     <router-view id="screen"
     @change="changed"
-    @play="play"
+    @play="play"  
     ></router-view>
     <div class="player">
-     <img src="" alt="" class="jpg">
-     <p class="name"></p>
-     <p class="singer"></p>
-     <div class="control"></div>
-     <div class="pplaylist"></div>
+     <img :src="musicpic" alt="" class="jpg">
+     <p class="name">{{musicname}}</p>
+     <br>
+     <p class="singer">{{singer}}</p>
+     <div class="playlist" @click="showlist"></div>
+     <div class="control" @click="onoff"></div>
+     
     </div>
-    <audio id="music" :src="test"></audio>
+    <audio id="music" :src="musicurl" autoplay="autoplay"></audio>
   </div>
 </template>
 
@@ -22,79 +34,104 @@ import axios from 'axios';
   data() {
     return {
       x: 1,
-      musicname: '',
-      singer: '',
+      musicname: 'test',
+      singer: 'test',
       musicurl:'',
       test:{},
-      musicphoto:'https://images.unsplash.com/photo-1556470856-878953ddea25?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2134&q=80',
-      process:'./asset/img/icons-start.svg'
+      musicpic:'',
+      process:'./asset/img/icons-start.svg',
+      playlist:[],
+      musicprocess:0
 
     }
   },
   mounted() {
-    this.setlistheight();
+    
   },
   updated() {
-    this.setlistheight();
+  
   },
   methods: {
-    start(){
-        if(this.x==0){
-        document.getElementById("music").pause();
-      
-        this.x=1;
-        console.log(this.x);
-        return;
-      }
-      if(this.x==1){
-      document.getElementById("music").play();
-     
-      this.x=0;
-      console.log(this.x);
-      }
-    
-    },
     changed(){
       this.musicname=arguments[0];
       this.singer=arguments[1];
-      this.musicurl='https://music.163.com/song/media/outer/url?id='+arguments[2]+'.mp3';
-      axios.get(this.musicurl).then(this.set)
-    
+      this.musicpic=arguments[2];
+      this.musicurl='https://music.163.com/song/media/outer/url?id='+arguments[3]+'.mp3'
     },
-    set(res){
-      res=res.data;
-      this.test=res.data[0].url;
-      this.musicphoto=res.data[0].
-      console.log(res);
-     
+    showlist(){
+      console.log('ko233')
     },
-    play(){
-      this.musicname=arguments[0];
-      this.singer=arguments[3];
-      this.musicurl='http://localhost:3000/song/url?id='+arguments[1];
-      this.musicphoto=arguments[2];
-      axios.get(this.musicurl).then(this.set)
-
-    },
-    setlistheight(){
-       var top = document.getElementsByClassName("top")[0].offsetHeight;
-       var menu = document.getElementsByClassName("menu")[0].offsetHeight;
-       var list = document.getElementsByClassName("list1")[0].offsetHeight;
-       var newmusic = document.getElementsByClassName("newmusic")[0].offsetHeight;
-       console.log(top,menu,list,newmusic);
+    onoff(){
+      if(this.musicprocess==0){
+      document.getElementById("music").pause()
+      this.musicprocess=1
+      }
+      else{
+        document.getElementById("music").play()
+        this.musicprocess=0
+      }
     }
- 
-   
-  },
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+ @function px2em($px, $base-font-size: 16px) {
+    @if (unitless($px)) {
+        @warn "Assuming #{$px} to be in pixels, attempting to convert it into pixels for you";
+        @return px2em($px + 0px); // That may fail.
+    } @else if (unit($px) == em) {
+        @return $px;
+    }
+    @return ($px / $base-font-size) * 1em;
+}
 *{
   margin: 0;
   padding: 0;
 }
-
+a{
+  text-decoration: none;
+}
+ .top{
+     display: flex;
+     width: 100%;
+     height: px2em(65, -font-size);
+     background: #d43c33;
+     justify-content: space-between;
+     .logo{
+         display: block;
+         padding-top: px2em(7, -font-size);
+     }
+     .bt{
+         text-align: center;
+         margin-top: px2em(15, -font-size);
+         margin-right: px2em(10, -font-size);
+         color: white;
+         width: px2em(90, -font-size);
+         height: px2em(30, -font-size);
+         border: 1px solid white;
+         border-radius: 5%;
+     }
+ }
+ .menu{
+     display: flex;
+     justify-content: space-around;
+     a{
+             display: block;
+             padding-top: px2em(10, -font-size);
+             padding-left: px2em(20, -font-size);
+             color: #d43c33;
+         }
+     .recommand,.hot,.search{
+         width: px2em(78, -font-size);
+         height: px2em(42, -font-size);
+        
+         
+     }
+     .recommand:hover,.hot:hover,.search:hover{
+         border-bottom: 2px solid #d43c33; 
+     }
+ }
 .player{
   width: 100%;
   position: fixed;
@@ -103,15 +140,49 @@ import axios from 'axios';
   bottom: 0px;
   
   .jpg{
-    display: inline-block;
+    display: block;
     width: 50px;
     height: 50px;
     position: relative;
     border-radius: 50%;
-    background-color: red;
+    background-color: blue;
+    float: left;
+    margin-left: 2%;
+    @keyframes rotate {
+      0%{transform:rotate(0deg);}
+      50%{transform:rotate(180deg);}
+      100%{transform:rotate(360deg);}
+    }
+    animation:rotate 6s linear infinite;
   }
   .name{
-    
+    float: left;
+    margin-left: 5%;
+  }
+  .singer{
+    float: left;
+     margin-left: 5%;
+  }
+  .control{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    bottom: 10px;
+    right: 70px;
+
+    background-image: url(./asset/img/play.jpg);
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  .playlist{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    bottom: 10px;
+    right: 2px;
+    background-image: url(./asset/img/playlist.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
   }
   
 }
