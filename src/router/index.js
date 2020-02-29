@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import home from '../page/home/home.vue'
 import player from '../page/player/player.vue'
 import hot from '../page/hot/hot.vue'
+import comment from '../page/comment/comment.vue'
+import ak from '../page/comment/123.vue'
 Vue.use(Router)
 
 export default new  Router ({
@@ -21,6 +23,11 @@ export default new  Router ({
           path: '/hot',
           name:'hot',
           component: hot
+      },
+      {
+          path:'/comment',
+          name:'comment',
+          component: comment
       }
   ]
 })

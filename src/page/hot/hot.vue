@@ -1,5 +1,6 @@
 <template>
     <div class="nice">
+        <h></h>
         <div class="box">
             <img :src="data17.playlist.coverImgUrl" alt="fuck" class="jpg">
             <div class="mini">
@@ -29,7 +30,9 @@
 
 <script>
 import axios from 'axios'
+import h from '.././home/head'
 export default {
+     components:{ h:h},
     data(){
         return{
         hoturl:'https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top-e3b63a0b1b.png',
@@ -46,15 +49,15 @@ export default {
     },
     methods: {
         gethot(){
-            axios.get('http://localhost:3000/top/list?idx=17')
+            axios.get('http://192.168.1.2:3000/top/list?idx=17')
             .then((res)=>{
                 this.data17=res.data
             })
-            axios.get('http://localhost:3000/top/list?idx=16')
+            axios.get('http://192.168.1.2:3000/top/list?idx=16')
             .then((res)=>{
                 this.data16=res.data
             })
-            axios.get('http://localhost:3000/top/list?idx=15')
+            axios.get('http://192.168.1.2:3000/top/list?idx=15')
             .then((res)=>{
                 this.data15=res.data
             })

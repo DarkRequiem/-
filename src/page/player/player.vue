@@ -17,7 +17,7 @@
           <img class="last" src="../../asset/img/close.svg" alt="">
       </div>
       <div class="result">
-          <div class="reslist" @click="play(item.name,item.artists[0].id,item.artists[0].img1v1Url,item.artists[0].name)" 
+          <div class="reslist" @click="playf(item.name,item.artists[0].id,item.artists[0].img1v1Url,item.artists[0].name)" 
           v-for="item of song" :key="item.id" v-if="song">
               <img class="first" src="../../asset/img/741.svg" alt="">
               <div class="list">{{item.name}}</div>
@@ -49,19 +49,22 @@ export default {
     },
     methods: {
         gethotsearch(){
-            axios.get('http://localhost:3000/search/hot')
+            axios.get('http://192.168.1.2:3000/search/hot')
             .then(this.sethot)
         },
         sethot(res){
-            
+            console.log(res.data)
             this.hots=res.data.result.hots;
             
-            
+            console.log(this.hots)
         },
-        play(name,id,img,singer){
+        playf(name,id,img,singer){
             console.log(id);
-            
-            this.$emit("play",name,id,img,singer);
+            console.log(name)
+            console.log(singer)
+            console.log(img)
+
+            this.$emit("playf",name,singer,img,id,);
         }
 
     },
@@ -79,7 +82,7 @@ export default {
             }
             this.timeer=setTimeout(()=>{
                  
-              axios.get('http://localhost:3000/search?keywords='+this.input)
+              axios.get('http://192.168.1.2:3000/search?keywords='+this.input)
             //   .then(function (res) {
                   
             //        that.song=res.data.result.songs;
@@ -116,8 +119,7 @@ export default {
             border-radius: 30px;
             width: 67%;
             
-            margin-left: 50px;
-            margin-top: 30px;
+           margin: 5% auto;
             img{
                 width: 15px;
                 height: 15px;
@@ -144,7 +146,7 @@ export default {
             .search{
                 border-radius: 30px;
                 background: #ebecec;
-                font-size: 16px;
+                font-size: 12px;
                 padding: 10px;
                 margin-top: 7px;
                 margin-right: 10px;
