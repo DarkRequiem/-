@@ -1,5 +1,6 @@
 <template>
     <div class="play">
+      <h></h>
       <div class="top">
           <img src="../../asset/img/input.svg" alt="">
           <input v-model="input" type="text" class="text" placeholder="搜索歌曲">
@@ -29,8 +30,10 @@
 
 <script>
 import axios from 'axios'
+import h from '../home/head'
 export default {
     name:'player',
+    components:{h:h},
     data(){
         return {
             target:'',
@@ -49,7 +52,7 @@ export default {
     },
     methods: {
         gethotsearch(){
-            axios.get('http://192.168.1.2:3000/search/hot')
+            axios.get('http://192.168.1.3:3000/search/hot')
             .then(this.sethot)
         },
         sethot(res){
@@ -82,7 +85,7 @@ export default {
             }
             this.timeer=setTimeout(()=>{
                  
-              axios.get('http://192.168.1.2:3000/search?keywords='+this.input)
+              axios.get('http://192.168.1.3:3000/search?keywords='+this.input)
             //   .then(function (res) {
                   
             //        that.song=res.data.result.songs;
@@ -113,7 +116,11 @@ export default {
        margin: 0;
        padding: 0;
    }
+   input{
+       outline: none;
+   }
     .play{
+        width: 100%;
         .top{
             background:#ebecec;
             border-radius: 30px;

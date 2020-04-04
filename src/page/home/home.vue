@@ -1,5 +1,6 @@
 <template>
-    <div class="main">
+    
+    <div class="main">  
         <h></h>
         <div class="list1">
             <div class="tag">推荐歌单</div>
@@ -51,7 +52,7 @@ export default {
     },
     methods:{
         getinfo(){
-            axios.get('http://192.168.1.2:3000/personalized')
+            axios.get('http://192.168.1.3:3000/personalized')
             .then(
                    this.handle
             )
@@ -62,7 +63,7 @@ export default {
             console.log(this.recommand);
         },
         getinfo1(){
-            axios.get('http://192.168.1.2:3000/personalized/newsong').then(this.handle1)
+            axios.get('http://192.168.1.3:3000/personalized/newsong').then(this.handle1)
         },
         handle1(res){
             res=res.data;
@@ -71,7 +72,7 @@ export default {
         },
         setmusic(name,singer,id){
             var _this=this
-            axios.get('http://192.168.1.2:3000/song/detail?ids='+arguments[2])
+            axios.get('http://192.168.1.3:3000/song/detail?ids='+arguments[2])
             .then(
                     function(res){
                     _this.testthis = res.data.songs[0].al.picUrl
@@ -102,14 +103,13 @@ export default {
     }
     @return ($px / $base-font-size) * 1em;
 }
-   .main{
-    padding: 0;
-    margin: 0;
-}
 a{
     text-decoration: none;
 }
-
+.main{
+    padding: 0;
+    margin: 0;
+    width: 100%;
  .list1{
      padding-top: px2em(20, -font-size);
      .tag{
@@ -186,5 +186,6 @@ a{
              }
          }
      }
+ }
  }
 </style>

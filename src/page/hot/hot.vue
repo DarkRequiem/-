@@ -49,15 +49,15 @@ export default {
     },
     methods: {
         gethot(){
-            axios.get('http://192.168.1.2:3000/top/list?idx=17')
+            axios.get('http://192.168.1.3:3000/top/list?idx=17')
             .then((res)=>{
                 this.data17=res.data
             })
-            axios.get('http://192.168.1.2:3000/top/list?idx=16')
+            axios.get('http://192.168.1.3:3000/top/list?idx=16')
             .then((res)=>{
                 this.data16=res.data
             })
-            axios.get('http://192.168.1.2:3000/top/list?idx=15')
+            axios.get('http://192.168.1.3:3000/top/list?idx=15')
             .then((res)=>{
                 this.data15=res.data
             })

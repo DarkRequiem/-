@@ -5,7 +5,7 @@
             <div class="bt">下载音乐</div>
         </div>
         <div class="menu">
-            <div class="recommand"><a href="">推荐</a></div>
+            <div class="recommand"><router-link to="home">推荐</router-link></div>
             <div class="hot"><router-link to="hot">热歌</router-link></div>
             <div class="search"><router-link to="player">搜索</router-link></div>
         </div>
@@ -39,6 +39,7 @@ a{
          line-height: 40px;
          margin-right: 7px;
          margin-top: 2px;
+         width: 100px;
          
      }
  }
@@ -57,6 +58,7 @@ a{
          line-height: 5vw;
          margin-top: 5px;
          text-align: center;
+         border-bottom: 2px solid transparent; 
         
          
      }

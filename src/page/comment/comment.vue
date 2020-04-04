@@ -3,20 +3,30 @@
     <div class="mask" :style="{backgroundImage: 'url(' + musicpi + ')' }">
        
     </div>
-
+    
     <div class="box">
          <div class="mid">
           <img :src="musicpi" alt="">
          </div>
      </div>
+    <div class="lyric">
+        <div class="main" v-for="item in ty"  @click="getinfo()">
+            <div class="scroll" >
+                {{item}}
+            </div>
+        </div>
+    </div>
      <!--   <div class="huan" @click="dose">
             <div class="d1"><div class="f1"></div></div>
             <div class="d2"><div class="f2"></div></div> 
         </div> -->
     <div class="frag" v-for="item in musicfull" :key="item.id">
         <div class="f1">
-            <img :src="item.user.avatarUrl" alt="">
+            <div class="set1">
+                 <img :src="item.user.avatarUrl" alt="">
             <p>{{item.user.nickname}}<br>{{time}}</p>
+            </div>
+           
             <div class="num">{{item.likedCount}}</div>
             
         </div>
@@ -24,6 +34,7 @@
             {{item.content}}
         </div>
     </div>
+    <div class="hold"></div>
     </div>
 </template>
 
@@ -39,6 +50,8 @@ export default {
     },
     data(){
         return{
+            ty:{},
+            lyric:['和国际饭店','规划局水电费见过看','rtgrhg','gdsfdsfsdfsd','gdsfsdfsdfdsgfd','rtrete'],
             b:0,
             s:0,
             musici:this.musicid,
@@ -57,11 +70,26 @@ export default {
         }
     },
     mounted(){
-        axios.get('http://192.168.1.2:3000/comment/music?id='+`${this.musici}`+'&limit=1')
+        axios.get('http://192.168.1.3:3000/comment/music?id='+`${this.musici}`+'&limit=1')
         .then((res)=>{
                this.musicfull=res.data.hotComments
                console.log(res)
         })
+        axios.get('http://192.168.1.3:3000/lyric?id='+`${this.musicid}`)
+        .then((res)=>{
+            console.log(res.data.lrc.lyric)
+            var k = res.data.lrc.lyric.split(/\n/)
+            for(let i=0;i<k.length;i++){
+                k[i]= k[i].split("]")[1]
+            }
+            console.log(this.lyric)
+            console.log(k)
+           this.ty = k
+        
+          //vue数组引用无法 ，外面包一层对象赋值进去
+            
+        })
+
     },
     computed:{
         tim:function(){
@@ -70,7 +98,13 @@ export default {
     },
     methods:{
         getinfo(){
-            
+            var ss=document.getElementsByClassName('scroll')[0];
+            console.log(ss)
+            var aa=screen.availHeight-30;
+            aa=`${aa}`+'px';
+            console.log(aa)
+            ss.style.top=`${aa}`
+            document.getElementsByClassName('scroll')[0].style.color="white"
         },
         dos(){
       
@@ -133,16 +167,38 @@ a{
         background-size: cover;
         background-position: center;
         position: fixed;
-        filter: blur(8px);
+        filter: blur(3px);
         z-index: -10;
-        background-color: rgba(0,0,0,.5);
+        
+
+    }
+    .lyric{
+        
+        display: block;
+        position: relative;
+        margin: 30px auto;
+        width: 75%;
+        height: 29vh;
+        overflow: hidden;
+        .main{
+            margin:0 auto;
+            font-size: 16px;
+            
+            .scroll{
+                margin-top: 3px;
+                text-align: center;
+                color: #999;
+            }
+        }
+
 
     }
     .box{
-       
+        
+        
         margin: 0 auto;
         width: 60vw;
-        height: 60vw;
+        height: 40vw;
         align-items: center;
         z-index: 21;
         margin-bottom: 10vh;
@@ -234,7 +290,7 @@ a{
         
     }
     .frag{
-        
+      background-color: rgba(0,0,0,0.2);
       width: 100%;
       border: 1px solid silver;
       border-color: transparent transparent silver transparent;
@@ -242,20 +298,23 @@ a{
             display: flex; 
             justify-content: space-between;
             align-items: center;
+            .set1{
+                display: flex;
             p{
-                width: 80%;
+                margin-left: 5px;
                 color: hsla(0,0%,100%,.7);
             }
             img{
-                width: 7%;
-                height: 7vw;
+                width: 27px;
+                height: 27px;
                 border-radius: 50%;
                 margin-top: 8px;
 
             }
+            }
             .num{
-                width: 10%;
-                height: 8vw;
+                width: 40px;
+                height: 20px;
                 color: #999;
                 position: relative;
                 display: block;
@@ -282,6 +341,10 @@ a{
         }
         
         
+    }
+    .hold{
+        width: 100%;
+        height: 60px;
     }
 }
     

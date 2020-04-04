@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-        
-        <transition name="fade">
+
+    <transition name="fade">
     <router-view id="screen"
     :musicpi="musicpic"
     :musicid="x"
@@ -10,8 +10,8 @@
     ></router-view>
     </transition>
 
-
-<router-link to="comment">
+ 
+    <router-link to="comment">
     <div class="player">
      <div class="go"></div>
      <img :src="musicpic" alt="" class="jpg">
@@ -30,9 +30,10 @@
 </template>
 
 <script>
-import what from './page/home/head.vue'
+import h from './page/home/head.vue'
  
   export default {
+  components:{ h:h},
   name: 'app',
   data() {
     return {
@@ -57,18 +58,25 @@ import what from './page/home/head.vue'
   },
   watch:{
     musicname:function(){
-     var a =document.getElementById("music")
-      a.ondurationchange = function() {
-      this.time=a.duration
-      console.log(a.duration)
-      var b =document.getElementsByClassName("go")[0]
-      b.style.animation="go 330s linear";
+      clearInterval(mu)
+      var now = 0
+      var b = document.getElementById("music")
+      setTimeout(function(){
+      console.log(b.duration)
+      },500)
+      var a = document.getElementsByClassName("go")[0]
+      let mu = setInterval(() => {
+        if(now==100){
+          clearInterval(mu)
+        }
+        
+        now = (b.currentTime/60)/(b.duration/60)*100
+        console.log(now)
+        a.style.width=`${now}`+'%'
+      }, 1000);
+}
     
     
-
-};
-    
-    }
   },
   methods: {
     hidden(){
@@ -117,7 +125,7 @@ import what from './page/home/head.vue'
     @return ($px / $base-font-size) * 1em;
 }
 .fade-enter-active {
-  transition: margin 0.5s;
+  transition: margin .5s;
 }
 .fade-enter /* .fade-leave-active below version 2.1.8 */ {
   margin-left: -100vw;
@@ -125,14 +133,17 @@ import what from './page/home/head.vue'
 
 }
 .fade-leave-to{
-  display: none;
+   margin-left: -100vw;
+  position: absolute;
+
 }
 .fade-leave{
-  margin-left: 100vw;
+  
+ position: absolute;
   
 }
 .fade-leave-active{
-  transition: margin 5s;
+  transition: margin .5s;
 }
 @keyframes go {
   0%{width: 0%}
@@ -165,19 +176,21 @@ a{
   position: fixed;
   display: block;
   height: 60px;
-  bottom: 0px;
+  bottom: -13px;
   font-size: 8px;
   line-height: 18px;
+  background-color: white;
   .go{
   content: "";
   display: block;
-  position: absolute;
+
   top: -2px;
   left: 3px;
   width: 0%;
   height: 3px;
   background-color: red;
-  animation: go 20s linear;
+  margin-bottom: 3px;
+
   
 }
   
