@@ -52,7 +52,7 @@ export default {
     },
     methods:{
         getinfo(){
-            axios.get('http://192.168.1.3:3000/personalized')
+            axios.get('http://localhost:3000/personalized')
             .then(
                    this.handle
             )
@@ -63,7 +63,7 @@ export default {
             console.log(this.recommand);
         },
         getinfo1(){
-            axios.get('http://192.168.1.3:3000/personalized/newsong').then(this.handle1)
+            axios.get('http://localhost:3000/personalized/newsong').then(this.handle1)
         },
         handle1(res){
             res=res.data;
@@ -72,7 +72,7 @@ export default {
         },
         setmusic(name,singer,id){
             var _this=this
-            axios.get('http://192.168.1.3:3000/song/detail?ids='+arguments[2])
+            axios.get('http://localhost:3000/song/detail?ids='+arguments[2])
             .then(
                     function(res){
                     _this.testthis = res.data.songs[0].al.picUrl

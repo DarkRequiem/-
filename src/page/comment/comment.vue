@@ -10,8 +10,8 @@
          </div>
      </div>
     <div class="lyric">
-        <div class="main" v-for="item in ty"  @click="getinfo()">
-            <div class="scroll" >
+        <div class="main"   @click="getinfo()">
+            <div class="scroll"  v-for="item in ty">
                 {{item}}
             </div>
         </div>
@@ -51,15 +51,15 @@ export default {
     data(){
         return{
             ty:{},
-            lyric:['和国际饭店','规划局水电费见过看','rtgrhg','gdsfdsfsdfsd','gdsfsdfsdfdsgfd','rtrete'],
+            lyric:[''],
             b:0,
             s:0,
             musici:this.musicid,
             musicfull:{},
-            username:'wori',
+            username:'',
             time:'2020年02月24日',
-            content:'dsadsadhjsajkdhasjkdkhjsakdakj',
-            userpic:'https://p2.music.126.net/dCV4V1QLrUc1foodBfv5dQ==/109951164721972545.jpg',
+            content:'',
+            userpic:'',
             num:123,
             
         }
@@ -70,19 +70,49 @@ export default {
         }
     },
     mounted(){
-        axios.get('http://192.168.1.3:3000/comment/music?id='+`${this.musici}`+'&limit=1')
+        clearTimeout()
+        axios.get('http://localhost:3000/comment/music?id='+`${this.musici}`+'&limit=1')
         .then((res)=>{
                this.musicfull=res.data.hotComments
                console.log(res)
         })
-        axios.get('http://192.168.1.3:3000/lyric?id='+`${this.musicid}`)
+        axios.get('http://localhost:3000/lyric?id='+`${this.musicid}`)
         .then((res)=>{
             console.log(res.data.lrc.lyric)
             var k = res.data.lrc.lyric.split(/\n/)
             for(let i=0;i<k.length;i++){
-                k[i]= k[i].split("]")[1]
-            }
-            console.log(this.lyric)
+                k[i]= k[i].split("]")[1]   
+            }   //歌词分割
+           var j=res.data.lrc.lyric.split(/\n/)
+           for(let i=0;i<j.length;i++){
+               j[i]=j[i].split("]")[0]
+               j[i]=j[i].split("[")[1]
+              
+           }
+           for(let i=0;i<j.length;i++){
+               var a =j[i]
+               if(typeof(a)=="string"){
+               j[i]=Number(a.split(":")[0]*60)+Number(a.split(":")[1])
+               }
+           }
+           var s=0
+           //audio ontimeupdate事件
+           var aud = document.getElementsByTagName('audio')[0]
+           aud.ontimeupdate=function(){
+               //console.log(aud.currentTime)
+               //console.log(j[3])
+               for(let i=0;i<j.length;i++){
+                   if(j[i]<aud.currentTime&&aud.currentTime<j[i+1]){
+                      document.getElementsByClassName('main')[0].style.transform=`translateY(${-24*(i-2)}px)`
+                       document.getElementsByClassName('scroll')[i].style.color='white'
+                       document.getElementsByClassName('scroll')[i-1].style.color='#999'
+                       
+                   }
+               }
+           }
+         
+            
+            console.log(j)
             console.log(k)
            this.ty = k
         
@@ -183,11 +213,13 @@ a{
         .main{
             margin:0 auto;
             font-size: 16px;
+            transform: translateY(0px);
             
             .scroll{
                 margin-top: 3px;
                 text-align: center;
                 color: #999;
+                height: 21px;
             }
         }
 

@@ -52,7 +52,7 @@ export default {
     },
     methods: {
         gethotsearch(){
-            axios.get('http://192.168.1.3:3000/search/hot')
+            axios.get('http://localhost:3000/search/hot')
             .then(this.sethot)
         },
         sethot(res){
@@ -85,7 +85,7 @@ export default {
             }
             this.timeer=setTimeout(()=>{
                  
-              axios.get('http://192.168.1.3:3000/search?keywords='+this.input)
+              axios.get('http://localhost:3000/search?keywords='+this.input)
             //   .then(function (res) {
                   
             //        that.song=res.data.result.songs;

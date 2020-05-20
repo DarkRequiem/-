@@ -33,7 +33,7 @@
 import h from './page/home/head.vue'
  
   export default {
-  components:{ h:h},
+  //components:{ h:h},
   name: 'app',
   data() {
     return {
@@ -42,7 +42,8 @@ import h from './page/home/head.vue'
       singer: 'test',
       musicurl:'',
       test:{},
-      musicpic:require('./asset/img/Disc.svg'),
+      musicpic:'',
+      //musicpic:require('./asset/img/Disc.svg'),
       process:'./asset/img/icons-start.svg',
       playlist:[],
       musicprocess:0,
@@ -71,7 +72,7 @@ import h from './page/home/head.vue'
         }
         
         now = (b.currentTime/60)/(b.duration/60)*100
-        console.log(now)
+        
         a.style.width=`${now}`+'%'
       }, 1000);
 }
@@ -97,10 +98,15 @@ import h from './page/home/head.vue'
       if(this.musicprocess==0){
       document.getElementById("music").pause()
       this.musicprocess=1
+      var a = document.getElementsByClassName('control')
+      a[0].style.backgroundImage='url(img/stop.f8e6a644.svg)';
+ 
       }
       else{
         document.getElementById("music").play()
         this.musicprocess=0
+        var a = document.getElementsByClassName('control')
+      a[0].style.backgroundImage='url(img/bofang.16c0c7c9.svg)';
       }
     },
     play(){
@@ -224,7 +230,18 @@ a{
     top: 5px;
     right: 70px;
 
-    background-image: url(./asset/img/bofang.svg);
+    background: url(./static/img/bofang.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  .controlstop{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 5px;
+    right: 70px;
+
+    background: url(./static/img/stop.svg);
     background-repeat: no-repeat;
     background-size: contain;
   }
