@@ -70,6 +70,9 @@ export default {
         }
     },
     mounted(){
+            window.addEventListener('popstate',function(){document.getElementsByClassName('player')[0].style.display='block'})
+            document.getElementsByClassName('player')[0].style.display='none'
+      
         clearTimeout()
         axios.get('http://localhost:3000/comment/music?id='+`${this.musici}`+'&limit=1')
         .then((res)=>{
@@ -377,6 +380,7 @@ a{
     .hold{
         width: 100%;
         height: 60px;
+        background-color: rgba(0,0,0,0.2);
     }
 }
     

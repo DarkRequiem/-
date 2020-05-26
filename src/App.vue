@@ -1,30 +1,45 @@
 <template>
   <div id="app">
-
+    
     <transition name="fade">
     <router-view id="screen"
     :musicpi="musicpic"
     :musicid="x"
+    :i="id"
     @change="changed"
     @playf="play"  
+    @id="setid"
     ></router-view>
     </transition>
 
  
-    <router-link to="comment">
-    <div class="player">
+    
+    <div class="player" v-show="singer"> 
      <div class="go"></div>
+     <router-link to="comment" @click="hidden">
      <img :src="musicpic" alt="" class="jpg">
-   
+     </router-link>
      <p class="name">{{musicname}}</p>
      <br>
      <p class="singer">{{singer}}</p>
     
-     <div class="playlist" @click="showlist"></div>
-     <div class="control" @click="onoff"></div>
+     <div class="playlist" @click="showlist" v-show="singer"></div>
+     <div class="control" @click="onoff" v-show="singer"></div>
      
     </div>
-    </router-link>
+
+    <div class="his">
+      <div class="hislist" v-for="(item, index) in hislist" :key="index">
+        <div class="id">{{index+1}}</div>
+            <div class="song">
+                <div class="songname">{{item}}</div>
+               
+            </div>
+            <div class="play" @click="del()"> </div>
+      </div>
+      
+    </div>
+    
     <audio id="music" :src="musicurl" autoplay="autoplay"></audio>
   </div>
 </template>
@@ -38,8 +53,8 @@ import h from './page/home/head.vue'
   data() {
     return {
       x: 1,
-      musicname: 'test',
-      singer: 'test',
+      musicname: '',
+      singer: '',
       musicurl:'',
       test:{},
       musicpic:'',
@@ -48,11 +63,13 @@ import h from './page/home/head.vue'
       playlist:[],
       musicprocess:0,
       time:0,
-
+      id:Number,
+      hislist:[],
+      h:0
     }
   },
   mounted() {
-    
+     
   },
   updated() {
   
@@ -60,6 +77,7 @@ import h from './page/home/head.vue'
   watch:{
     musicname:function(){
       clearInterval(mu)
+      this.hislist.push(this.musicname)
       var now = 0
       var b = document.getElementById("music")
       setTimeout(function(){
@@ -93,13 +111,25 @@ import h from './page/home/head.vue'
     },
     showlist(){
       console.log('ko233')
+      if(this.h==0){
+          document.getElementsByClassName('his')[0].style.bottom='50px'
+          this.h=1
+      }
+      else{
+        document.getElementsByClassName('his')[0].style.bottom='-250px'
+          this.h=0
+      }
+      
+    },
+    del(index){
+      this.hislist.splice(index,1)
     },
     onoff(){
       if(this.musicprocess==0){
       document.getElementById("music").pause()
       this.musicprocess=1
       var a = document.getElementsByClassName('control')
-      a[0].style.backgroundImage='url(img/stop.f8e6a644.svg)';
+      a[0].style.backgroundImage='url(img/stop.90cde5bd.svg)';
  
       }
       else{
@@ -108,6 +138,10 @@ import h from './page/home/head.vue'
         var a = document.getElementsByClassName('control')
       a[0].style.backgroundImage='url(img/bofang.16c0c7c9.svg)';
       }
+    },
+    setid(){
+      this.id =arguments[0]
+      console.log(arguments[0])
     },
     play(){
      this.musicname=arguments[0];
@@ -178,6 +212,7 @@ a{
   }
 
 .player{
+  z-index: 5;
   width: 100%;
   position: fixed;
   display: block;
@@ -186,6 +221,7 @@ a{
   font-size: 8px;
   line-height: 18px;
   background-color: white;
+  border-radius: 5px 5px;
   .go{
   content: "";
   display: block;
@@ -199,6 +235,7 @@ a{
 
   
 }
+
   
   .jpg{
     display: block;
@@ -258,5 +295,51 @@ a{
   
   
 }
+.his{
+    position: fixed;
+    bottom: -250px;
+    width: 100%;
+    height: 250px;
+    background-color: #EFF1F2;
+    border-radius: 5px 5px;
+    transition: bottom 1s;
+    overflow: auto;
+     .hislist{
+       display: flex;
+       justify-content: space-between;
+       align-items: center;
+       margin: 8px;
+       border-bottom: 1px solid silver;;
+       
+       .id{
+           width: 20px;
+           height: 20px;
+           border-radius: 50%;
+           background-color: whitesmoke;
+           text-align: center;
+           line-height: 20px;
+           margin-right: 8px;
+
+       }
+       .play{
+           width: 20px;
+           height: 20px;
+           border-radius: 50%;
+           background-image: url(./asset/img/close.svg);
+           background-size: cover;
+           margin-right: 10px;
+           border: 1px soild #E9E9E9;
+       }
+
+       .song{
+           flex-grow: 1;
+           .songname{
+               font-size: 16px;
+           }
+           
+       }
+   }
+  }
+  
 </style>
 

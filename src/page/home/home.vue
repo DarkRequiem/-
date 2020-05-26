@@ -5,7 +5,8 @@
         <div class="list1">
             <div class="tag">推荐歌单</div>
             <div class="rongqi">
-                <div class="box" v-for="item of recommand" :key='item.id'>
+                <div class="box" v-for="item of recommand" :key='item.id' @click="showlist(item.id)">
+                   
                     <div class="photo">
                         <img :src="item.picUrl" alt="">
                     </div>
@@ -49,6 +50,7 @@ export default {
     mounted(){
      this.getinfo(),
      this.getinfo1()
+     
     },
     methods:{
         getinfo(){
@@ -85,7 +87,13 @@ export default {
 
             this.$emit("change",name,singer,id);
 
+        },
+        showlist(id){
+            console.log(id)
+            this.$emit("id",id)
+            this.$router.push({path:'/songlist'})
         }
+
     },
 
 }
@@ -105,6 +113,11 @@ export default {
 }
 a{
     text-decoration: none;
+}
+.full{
+    width: 100%;
+    height: 100%;
+    position: absolute;
 }
 .main{
     padding: 0;

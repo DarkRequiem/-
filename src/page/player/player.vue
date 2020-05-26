@@ -124,7 +124,7 @@ export default {
         .top{
             background:#ebecec;
             border-radius: 30px;
-            width: 67%;
+            width: 75%;
             
            margin: 5% auto;
             img{
